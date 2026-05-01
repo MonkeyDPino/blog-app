@@ -1,4 +1,4 @@
-import { UsersService } from './users.service';
+import { UsersService } from '../services/users.service';
 import {
   Controller,
   Get,
@@ -9,9 +9,9 @@ import {
   Put,
   ParseIntPipe,
 } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from './dtos/user.dto';
-import { User } from './entities/user.entity';
-import { Profile } from './entities/profile.entity';
+import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
+import { User } from '../entities/user.entity';
+import { Profile } from '../entities/profile.entity';
 
 @Controller('users')
 export class UsersController {

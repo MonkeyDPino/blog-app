@@ -34,7 +34,6 @@ export class CreateUserDto {
   profile!: CreateProfileDto;
 }
 
-// DTO para actualizar: email y name opcionales, ID requerido
 export class UpdateUserDto extends PartialType(
   OmitType(CreateUserDto, ['profile'] as const),
 ) {
