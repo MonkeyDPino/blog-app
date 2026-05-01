@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
       useFactory: (configService: ConfigService<Env>) => ({
         type: 'postgres',
         host: configService.get('POSTGRES_HOST', { infer: true }),
@@ -20,7 +21,6 @@ import { AuthModule } from './auth/auth.module';
         autoLoadEntities: true,
         synchronize: false,
       }),
-      inject: [ConfigService],
     }),
     UsersModule,
     PostsModule,
