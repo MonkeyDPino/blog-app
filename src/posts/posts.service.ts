@@ -15,6 +15,7 @@ export class PostsService {
   private async findOne(id: number): Promise<Post> {
     const post = await this.postRepository.findOne({
       where: { id },
+      relations: ['author.profile'],
     });
 
     if (!post) {
@@ -29,11 +30,12 @@ export class PostsService {
       ...createPostDto,
       author: { id: createPostDto.authorId },
     });
-    return newPost;
+    const createdPost = await this.findOne(newPost.id);
+    return createdPost;
   }
 
   async findAll(): Promise<Post[]> {
-    return this.postRepository.find();
+    return this.postRepository.find({ relations: ['author.profile'] });
   }
 
   async getPostById(id: number): Promise<Post> {
