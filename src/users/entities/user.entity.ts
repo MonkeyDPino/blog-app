@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -10,6 +11,8 @@ import {
 } from 'typeorm';
 import { Profile } from './profile.entity';
 import { Post } from '../../posts/entities/post.entity';
+import * as bcrypt from 'bcrypt';
+import { Exclude } from 'class-transformer';
 
 @Entity({
   name: 'users',
@@ -21,6 +24,7 @@ export class User {
   @Column({ type: 'varchar', length: 255, unique: true })
   email!: string;
 
+  @Exclude()
   @Column({ type: 'varchar', length: 255 })
   password!: string;
 
@@ -47,4 +51,10 @@ export class User {
   })
   @JoinColumn({ name: 'profile_id' })
   profile!: Profile;
+
+  @BeforeInsert()
+  async hashPassword() {
+    // Implementation for hashing password
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 }
