@@ -43,6 +43,13 @@ export class PostsService {
     });
   }
 
+  async findByCategory(categoryId: number): Promise<Post[]> {
+    return this.postRepository.find({
+      where: { categories: { id: categoryId } },
+      relations: ['author.profile', 'categories'],
+    });
+  }
+
   async getPostById(id: number): Promise<Post> {
     return this.findOne(id);
   }
