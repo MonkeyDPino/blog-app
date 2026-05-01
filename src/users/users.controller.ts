@@ -34,6 +34,11 @@ export class UsersController {
     return await this.usersService.getUserProfile(id);
   }
 
+  @Get(':id/posts')
+  async getUserPosts(@Param('id', ParseIntPipe) id: number) {
+    return await this.usersService.getUserPosts(id);
+  }
+
   @Post()
   async createUser(@Body() userData: CreateUserDto): Promise<User> {
     return await this.usersService.create(userData);

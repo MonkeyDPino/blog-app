@@ -12,10 +12,10 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  private async findOne(id: number): Promise<User> {
+  private async findOne(id: number, getPosts: boolean = false): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: ['profile'],
+      relations: ['profile'].concat(getPosts ? ['posts'] : []),
     });
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
@@ -55,5 +55,13 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
     return user.profile;
+  }
+
+  async getUserPosts(id: number) {
+    const user = await this.findOne(id, true);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user.posts;
   }
 }
