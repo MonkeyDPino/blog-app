@@ -8,7 +8,9 @@ import {
   Delete,
   Put,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto, UpdateUserDto } from '../dto/user.dto';
 import { User } from '../entities/user.entity';
 import { Profile } from '../entities/profile.entity';
@@ -17,16 +19,19 @@ import { Profile } from '../entities/profile.entity';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async getUsers(): Promise<User[]> {
     return await this.usersService.findAll();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   async getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return await this.usersService.getUserById(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id/profile')
   async getUserProfile(
     @Param('id', ParseIntPipe) id: number,
@@ -44,6 +49,7 @@ export class UsersController {
     return await this.usersService.create(userData);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   async deleteUser(
     @Param('id', ParseIntPipe) id: number,
@@ -51,6 +57,7 @@ export class UsersController {
     return await this.usersService.delete(id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Put(':id')
   async updateUser(
     @Param('id', ParseIntPipe) id: number,
