@@ -73,6 +73,10 @@ POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POR
 
 Docker Compose defaults: host=localhost, port=5432, db=my_blog_db, user=blog_user, password=blog_password.
 
+## Access
+
+The API is publicly accessible at: `https://blog-api.pinodev.app`
+
 ## Notes
 
 - The `posts` module uses a nested folder structure (`controllers/`, `services/`) while `users` is flat — there's no project-wide convention yet.
