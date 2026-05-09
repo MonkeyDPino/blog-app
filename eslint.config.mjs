@@ -3,6 +3,9 @@ import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 export default tseslint.config(
   {
@@ -22,7 +25,7 @@ export default tseslint.config(
       globals: { ...globals.node, ...globals.jest },
       parserOptions: {
         project: './apps/backend/tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
     },
   },
@@ -32,7 +35,7 @@ export default tseslint.config(
       globals: { ...globals.browser },
       parserOptions: {
         project: './apps/frontend/tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
     },
   },
@@ -41,7 +44,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         project: './packages/types/tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
     },
   },

@@ -6,7 +6,32 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      '@eslint/eslintrc':
+        specifier: ^3.2.0
+        version: 3.3.5
+      '@eslint/js':
+        specifier: ^9.18.0
+        version: 9.39.4
+      eslint:
+        specifier: ^9.18.0
+        version: 9.39.4
+      eslint-config-prettier:
+        specifier: ^10.0.1
+        version: 10.1.8(eslint@9.39.4)
+      eslint-plugin-prettier:
+        specifier: ^5.2.2
+        version: 5.5.5(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.4))(eslint@9.39.4)(prettier@3.8.1)
+      globals:
+        specifier: ^17.0.0
+        version: 17.4.0
+      prettier:
+        specifier: ^3.4.2
+        version: 3.8.1
+      typescript-eslint:
+        specifier: ^8.20.0
+        version: 8.58.1(eslint@9.39.4)(typescript@5.9.3)
 
   apps/backend:
     dependencies:
@@ -77,12 +102,6 @@ importers:
         specifier: ^0.3.28
         version: 0.3.28(pg@8.20.0)(ts-node@10.9.2(@types/node@24.12.2)(typescript@5.9.3))
     devDependencies:
-      '@eslint/eslintrc':
-        specifier: ^3.2.0
-        version: 3.3.5
-      '@eslint/js':
-        specifier: ^9.18.0
-        version: 9.39.4
       '@nestjs/cli':
         specifier: ^11.0.0
         version: 11.0.19(@types/node@24.12.2)
@@ -116,24 +135,9 @@ importers:
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
-      eslint:
-        specifier: ^9.18.0
-        version: 9.39.4
-      eslint-config-prettier:
-        specifier: ^10.0.1
-        version: 10.1.8(eslint@9.39.4)
-      eslint-plugin-prettier:
-        specifier: ^5.2.2
-        version: 5.5.5(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.4))(eslint@9.39.4)(prettier@3.8.1)
-      globals:
-        specifier: ^17.0.0
-        version: 17.4.0
       jest:
         specifier: ^30.0.0
         version: 30.3.0(@types/node@24.12.2)(ts-node@10.9.2(@types/node@24.12.2)(typescript@5.9.3))
-      prettier:
-        specifier: ^3.4.2
-        version: 3.8.1
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -155,9 +159,6 @@ importers:
       typescript:
         specifier: ^5.7.3
         version: 5.9.3
-      typescript-eslint:
-        specifier: ^8.20.0
-        version: 8.58.1(eslint@9.39.4)(typescript@5.9.3)
 
   apps/frontend:
     dependencies:
