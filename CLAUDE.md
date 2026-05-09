@@ -100,7 +100,7 @@ All entities use `@PrimaryGeneratedColumn()` (UUID not used) and `timestamptz` f
 
 ### Environment Variables
 
-Defined in `apps/backend/src/env.model.ts` and loaded from `.env` at the **monorepo root** (`/path/to/my-blog-api/.env`):
+Defined in `apps/backend/src/env.model.ts` and loaded from `.env` at the **monorepo root** (`/path/to/blog-app/.env`):
 
 ```
 POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, PORT
