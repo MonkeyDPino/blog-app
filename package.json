@@ -1,7 +1,10 @@
 {
   "name": "@blog/root",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "pnpm --filter @blog/backend start:dev",
     "build:backend": "pnpm --filter @blog/backend build",
@@ -9,7 +12,8 @@
     "test:e2e": "pnpm --filter @blog/backend test:e2e",
     "frontend:dev": "pnpm --filter @blog/frontend dev",
     "lint": "eslint \"apps/**/*.ts\" \"apps/**/*.tsx\" \"packages/**/*.ts\" --fix",
-    "format": "prettier --write \"apps/**/*.ts\" \"apps/**/*.tsx\" \"packages/**/*.ts\""
+    "format": "prettier --write \"apps/**/*.ts\" \"apps/**/*.tsx\" \"packages/**/*.ts\"",
+    "migration:run": "pnpm --filter @blog/backend migration:run"
   },
   "engines": {
     "node": ">=22.16.0"

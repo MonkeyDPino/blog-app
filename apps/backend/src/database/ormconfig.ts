@@ -2,7 +2,7 @@ import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
 
-config();
+config({ path: join(__dirname, '../../../../.env') });
 
 export default new DataSource({
   type: 'postgres',
