@@ -5,10 +5,10 @@ export class ImproveContentDto {
   @ApiProperty({ description: 'The blog post content to improve' })
   @IsString()
   @IsNotEmpty()
-  content: string;
+  content!: string;
 
   @ApiProperty({ description: 'Instruction for how to improve the content' })
   @IsString()
   @IsNotEmpty()
-  instruction: string;
+  instruction!: string;
 }
