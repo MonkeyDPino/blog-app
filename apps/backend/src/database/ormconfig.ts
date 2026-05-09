@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
 
@@ -10,7 +11,7 @@ export default new DataSource({
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  entities: ['./src/**/*.entity.ts'],
-  migrations: ['./src/database/migrations/*.ts'],
+  entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
+  migrations: [join(__dirname, './migrations/*{.ts,.js}')],
   synchronize: false,
 });
