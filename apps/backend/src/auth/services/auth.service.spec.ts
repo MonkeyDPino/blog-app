@@ -182,6 +182,7 @@ describe('AuthService', () => {
       };
       refreshTokenRepo.create.mockReturnValue(newTokenEntity);
       refreshTokenRepo.save.mockResolvedValue(newTokenEntity);
+      usersService.getUserById.mockResolvedValue(user);
 
       const result = await service.refreshTokens({
         tokenId: 'valid-id',

@@ -1,3 +1,5 @@
+export type UserRole = 'user' | 'admin';
+
 export interface IProfile {
   id: number;
   firstName: string;
@@ -10,6 +12,7 @@ export interface IProfile {
 export interface IUser {
   id: number;
   email: string;
+  role: UserRole;
   createdAt: Date;
   updatedAt: Date;
   profile: IProfile;

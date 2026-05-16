@@ -14,7 +14,7 @@ export interface IPost {
   coverImage: string | null;
   summary: string | null;
   isDraft: boolean;
-  author: Pick<IUser, 'id' | 'email'>;
+  author: Pick<IUser, 'id' | 'email' | 'profile'>;
   categories: ICategory[];
   createdAt: Date;
   updatedAt: Date;

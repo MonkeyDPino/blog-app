@@ -4,14 +4,17 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { TypeOrmExceptionFilter } from './common/filters/typeorm-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(helmet());
+  app.use(cookieParser());
   app.enableCors({
-    origin: process.env.CORS_ORIGIN?.split(',') || '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Accept, Authorization',
+    origin: process.env.FRONTEND_URL ?? 'http://localhost:3001',
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Accept',
   });
   app.useGlobalPipes(
     new ValidationPipe({

@@ -14,6 +14,7 @@ import { Exclude } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 import { Profile } from './profile.entity';
 import { Post } from '../../posts/entities/post.entity';
+import { UserRole } from '../../common/enums/user-role.enum';
 
 @Entity({
   name: 'users',
@@ -56,6 +57,14 @@ export class User {
     name: 'updated_at',
   })
   updatedAt!: Date;
+
+  @ApiProperty({
+    description: 'Role of the user',
+    enum: UserRole,
+    example: UserRole.USER,
+  })
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+  role!: UserRole;
 
   @ApiHideProperty()
   @OneToMany(() => Post, (post) => post.author)

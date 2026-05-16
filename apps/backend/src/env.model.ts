@@ -12,4 +12,7 @@ export interface Env {
   GEMINI_MODEL: string;
   THROTTLE_TTL: number;
   THROTTLE_LIMIT: number;
+  FRONTEND_URL: string;
+  ADMIN_EMAIL: string;
+  ADMIN_PASSWORD: string;
 }

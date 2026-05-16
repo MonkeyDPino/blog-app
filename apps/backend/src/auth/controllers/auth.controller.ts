@@ -1,8 +1,9 @@
 import {
   Controller,
   Post,
+  Get,
   Req,
-  Body,
+  Res,
   UseGuards,
   HttpCode,
   HttpStatus,
@@ -16,10 +17,10 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { Throttle } from '@nestjs/throttler';
-import { type Request } from 'express';
+import { type Request, type Response } from 'express';
 import { AuthService } from '../services/auth.service';
 import { User } from '../../users/entities/user.entity';
-import { RefreshTokenDto } from '../dto/refresh-token.dto';
+import { Payload } from '../models/payload.model';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -39,24 +40,11 @@ export class AuthController {
   })
   @ApiResponse({
     status: 200,
-    description:
-      'Login successful — returns user, JWT access token, and refresh token',
+    description: 'Login successful — sets auth cookies and returns user',
     schema: {
       type: 'object',
       properties: {
         user: { $ref: '#/components/schemas/User' },
-        accessToken: {
-          type: 'string',
-          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        },
-        refreshToken: {
-          type: 'object',
-          properties: {
-            tokenId: { type: 'string', example: 'uuid-here' },
-            tokenValue: { type: 'string', example: 'hex-value-here' },
-            expiresAt: { type: 'string', format: 'date-time' },
-          },
-        },
       },
     },
   })
@@ -64,43 +52,84 @@ export class AuthController {
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Req() req: Request) {
+  async login(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const user = req.user as User;
-    return this.authService.login(user);
+    const result = await this.authService.login(user);
+    this.authService.setAuthCookies(
+      res,
+      result.accessToken,
+      result.refreshToken,
+    );
+    return { user: result.user };
   }
 
-  @ApiOperation({ summary: 'Refresh access token using a refresh token' })
+  @ApiOperation({ summary: 'Refresh access token using cookies' })
   @ApiResponse({
     status: 200,
-    description: 'New access and refresh tokens issued',
+    description: 'New access and refresh tokens issued via cookies',
     schema: {
       type: 'object',
       properties: {
-        accessToken: { type: 'string' },
-        refreshToken: {
-          type: 'object',
-          properties: {
-            tokenId: { type: 'string' },
-            tokenValue: { type: 'string' },
-            expiresAt: { type: 'string', format: 'date-time' },
-          },
-        },
+        user: { $ref: '#/components/schemas/User' },
       },
     },
   })
   @ApiResponse({ status: 401, description: 'Invalid or expired refresh token' })
   @Post('refresh')
-  refreshTokens(@Body() dto: RefreshTokenDto) {
-    return this.authService.refreshTokens(dto);
+  async refreshTokens(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const tokenId = req.cookies?.['refresh_token_id'] as string | undefined;
+    const tokenValue = req.cookies?.['refresh_token_value'] as
+      | string
+      | undefined;
+
+    const result = await this.authService.refreshTokens({
+      tokenId: tokenId ?? '',
+      tokenValue: tokenValue ?? '',
+    });
+    this.authService.setAuthCookies(
+      res,
+      result.accessToken,
+      result.refreshToken,
+    );
+    return { user: result.user };
   }
 
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Logout — revoke a refresh token' })
+  @ApiOperation({ summary: 'Logout — revoke refresh token and clear cookies' })
   @ApiResponse({ status: 204, description: 'Logged out successfully' })
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('logout')
-  async logout(@Body() dto: RefreshTokenDto): Promise<void> {
-    return this.authService.logout(dto);
+  async logout(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
+    const tokenId = req.cookies?.['refresh_token_id'] as string | undefined;
+    const tokenValue = req.cookies?.['refresh_token_value'] as
+      | string
+      | undefined;
+
+    if (tokenId && tokenValue) {
+      await this.authService.logout({ tokenId, tokenValue });
+    }
+    this.authService.clearAuthCookies(res);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get current authenticated user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the authenticated user with profile',
+    type: User,
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  async getMe(@Req() req: Request) {
+    const payload = req.user as Payload;
+    return this.authService.getMe(payload.sub);
   }
 }

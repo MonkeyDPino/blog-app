@@ -11,6 +11,7 @@ import { Payload } from '../models/payload.model';
 import { RefreshToken } from '../entities/refresh-token.entity';
 import { RefreshTokenDto } from '../dto/refresh-token.dto';
 import { Env } from '../../env.model';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +36,7 @@ export class AuthService {
   }
 
   generateJwt(user: User): string {
-    const payload: Payload = { sub: user.id };
+    const payload: Payload = { sub: user.id, role: user.role };
     return this.jwtService.sign(payload, {
       issuer: this.configService.get('JWT_ISSUER', { infer: true }),
       audience: this.configService.get('JWT_AUDIENCE', { infer: true }),
@@ -74,6 +75,7 @@ export class AuthService {
   async refreshTokens(dto: RefreshTokenDto): Promise<{
     accessToken: string;
     refreshToken: { tokenId: string; tokenValue: string; expiresAt: Date };
+    user: User;
   }> {
     const existing = await this.refreshTokenRepo.findOne({
       where: { tokenId: dto.tokenId },
@@ -91,10 +93,11 @@ export class AuthService {
 
     await this.refreshTokenRepo.delete({ tokenId: dto.tokenId });
 
-    const accessToken = this.generateJwt(existing.user);
+    const user = await this.usersService.getUserById(existing.userId);
+    const accessToken = this.generateJwt(user);
     const refreshToken = await this.generateRefreshToken(existing.userId);
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, user };
   }
 
   async logout(dto: RefreshTokenDto): Promise<void> {
@@ -110,5 +113,46 @@ export class AuthService {
     if (isMatch) {
       await this.refreshTokenRepo.delete({ tokenId: dto.tokenId });
     }
+  }
+
+  setAuthCookies(
+    res: Response,
+    accessToken: string,
+    refreshToken: { tokenId: string; tokenValue: string; expiresAt: Date },
+  ): void {
+    const isProd = process.env.NODE_ENV === 'production';
+    const base = { httpOnly: true, secure: isProd, sameSite: 'lax' as const };
+    res.cookie('access_token', accessToken, {
+      ...base,
+      path: '/',
+      maxAge: 21600000,
+    });
+    res.cookie('refresh_token_id', refreshToken.tokenId, {
+      ...base,
+      path: '/auth',
+      maxAge: 604800000,
+    });
+    res.cookie('refresh_token_value', refreshToken.tokenValue, {
+      ...base,
+      path: '/auth',
+      maxAge: 604800000,
+    });
+  }
+
+  clearAuthCookies(res: Response): void {
+    const isProd = process.env.NODE_ENV === 'production';
+    const base = {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: 'lax' as const,
+      maxAge: 0,
+    };
+    res.cookie('access_token', '', { ...base, path: '/' });
+    res.cookie('refresh_token_id', '', { ...base, path: '/auth' });
+    res.cookie('refresh_token_value', '', { ...base, path: '/auth' });
+  }
+
+  async getMe(userId: number): Promise<User> {
+    return this.usersService.getUserById(userId);
   }
 }

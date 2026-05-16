@@ -14,6 +14,7 @@ export default tseslint.config(
       '**/dist/**',
       '**/.next/**',
       '**/node_modules/**',
+      'apps/frontend/next-env.d.ts',
     ],
   },
   eslint.configs.recommended,
@@ -37,6 +38,12 @@ export default tseslint.config(
         project: './apps/frontend/tsconfig.json',
         tsconfigRootDir: __dirname,
       },
+    },
+    rules: {
+      '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      'no-useless-escape': 'off',
     },
   },
   {

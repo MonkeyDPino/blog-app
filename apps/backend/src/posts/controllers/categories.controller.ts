@@ -18,6 +18,9 @@ import { UpdateCategoryDto } from '../dto/update-category.dto';
 import { Category } from '../entities/category.entity';
 import { PostsService } from '../services/posts.service';
 import { Post as PostEntity } from '../entities/post.entity';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { UserRole } from '../../common/enums/user-role.enum';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -30,7 +33,8 @@ export class CategoriesController {
   @ApiJwtAuth()
   @ApiOperation({ summary: 'Create a new category' })
   @ApiResponse({ status: 201, description: 'Category created', type: Category })
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN)
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
@@ -74,7 +78,8 @@ export class CategoriesController {
   @ApiParam({ name: 'id', type: Number, description: 'Category ID' })
   @ApiResponse({ status: 200, description: 'Category updated', type: Category })
   @ApiResponse({ status: 404, description: 'Category not found' })
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN)
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -88,7 +93,8 @@ export class CategoriesController {
   @ApiParam({ name: 'id', type: Number, description: 'Category ID' })
   @ApiResponse({ status: 200, description: 'Category deleted' })
   @ApiResponse({ status: 404, description: 'Category not found' })
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.categoriesService.remove(id);

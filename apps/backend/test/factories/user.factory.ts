@@ -1,5 +1,6 @@
 import { Profile } from '../../src/users/entities/profile.entity';
 import { User } from '../../src/users/entities/user.entity';
+import { UserRole } from '../../src/common/enums/user-role.enum';
 
 export function buildProfile(overrides: Partial<Profile> = {}): Profile {
   return {
@@ -18,6 +19,7 @@ export function buildUser(overrides: Partial<User> = {}): User {
     id: 1,
     email: 'test@example.com',
     password: 'hashed-password',
+    role: UserRole.USER,
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date('2024-01-01'),
     profile: buildProfile(),

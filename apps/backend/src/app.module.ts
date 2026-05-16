@@ -31,6 +31,9 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
         PORT: Joi.number().default(3000),
         THROTTLE_TTL: Joi.number().default(60_000),
         THROTTLE_LIMIT: Joi.number().default(10),
+        FRONTEND_URL: Joi.string().required(),
+        ADMIN_EMAIL: Joi.string().email().optional(),
+        ADMIN_PASSWORD: Joi.string().optional(),
       }),
     }),
     ThrottlerModule.forRootAsync({
