@@ -174,14 +174,15 @@ export class PostsService {
       .leftJoinAndSelect('post.author', 'author')
       .leftJoinAndSelect('author.profile', 'profile')
       .leftJoinAndSelect('post.categories', 'categories')
+      .addSelect(
+        `ts_rank(post.search_vector, to_tsquery('english', :tsquery))`,
+        'rank',
+      )
       .where(`post.search_vector @@ to_tsquery('english', :tsquery)`, {
         tsquery,
       })
       .andWhere('post.isDraft = false')
-      .orderBy(
-        `ts_rank(post.search_vector, to_tsquery('english', :tsquery))`,
-        'DESC',
-      )
+      .orderBy('rank', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
       .getManyAndCount();
