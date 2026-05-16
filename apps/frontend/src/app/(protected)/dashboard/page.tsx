@@ -39,14 +39,25 @@ export default function DashboardPage() {
   const drafts = posts.filter((p) => p.isDraft);
 
   if (isLoading) {
-    return <p className="text-neutral-500">Loading…</p>;
+    return (
+      <div className="space-y-3">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-14 animate-pulse rounded-xl bg-slate-100" />
+        ))}
+      </div>
+    );
   }
 
   return (
     <div>
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <Button asChild>
+      <div className="mb-10 flex items-end justify-between border-b border-border pb-6">
+        <div>
+          <h1 className="font-serif text-4xl font-bold text-ink">Dashboard</h1>
+          <p className="mt-1 text-sm text-muted">
+            {published.length} published · {drafts.length} drafts
+          </p>
+        </div>
+        <Button asChild variant="cta">
           <Link href="/posts/new">New post</Link>
         </Button>
       </div>
@@ -81,25 +92,32 @@ function PostSection({
 }: PostSectionProps) {
   return (
     <section className="mb-10">
-      <h2 className="mb-4 text-xl font-semibold">
-        {title} ({posts.length})
+      <h2 className="font-serif mb-4 text-xl font-semibold text-ink">
+        {title}{' '}
+        <span className="text-muted font-sans font-normal text-sm">
+          ({posts.length})
+        </span>
       </h2>
       {posts.length === 0 ? (
-        <p className="text-sm text-neutral-500">None yet.</p>
+        <p className="text-sm text-muted py-6 text-center border border-dashed border-border rounded-xl">
+          None yet.
+        </p>
       ) : (
-        <ul className="space-y-3">
+        <ul className="space-y-2">
           {posts.map((post) => (
             <li
               key={post.id}
-              className="flex items-center justify-between rounded-lg border border-neutral-200 bg-white px-4 py-3"
+              className="flex items-center justify-between rounded-xl border border-border bg-surface px-5 py-3.5 hover:border-primary/30 transition-colors"
             >
               <div className="flex items-center gap-3 min-w-0">
                 {showDraftBadge && (
-                  <Badge variant="outline" className="shrink-0">
+                  <Badge variant="outline" className="shrink-0 text-muted">
                     Draft
                   </Badge>
                 )}
-                <span className="truncate font-medium">{post.title}</span>
+                <span className="truncate font-medium text-ink">
+                  {post.title}
+                </span>
               </div>
               <div className="flex shrink-0 items-center gap-2 ml-4">
                 {!post.isDraft && (

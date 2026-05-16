@@ -16,11 +16,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="font-sans antialiased">
         <AuthProvider>
           <Navbar />
-          <main className="container mx-auto px-4 py-8">{children}</main>
-          <Toaster />
+          <main className="container mx-auto max-w-6xl px-4 py-10">
+            {children}
+          </main>
+          <Toaster richColors position="bottom-right" />
         </AuthProvider>
       </body>
     </html>

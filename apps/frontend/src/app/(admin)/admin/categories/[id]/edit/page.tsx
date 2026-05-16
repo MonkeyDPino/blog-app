@@ -32,7 +32,11 @@ export default async function EditCategoryPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold">Edit category</h1>
+      <div className="mb-8 border-b border-border pb-6">
+        <h1 className="font-serif text-4xl font-bold text-ink">
+          Edit category
+        </h1>
+      </div>
       <CategoryForm categoryId={categoryId} initialData={category} />
     </div>
   );

@@ -39,12 +39,12 @@ export function CategoryChips({
             type="button"
             onClick={() => toggle(cat.id)}
             className={cn(
-              'rounded-full border px-3 py-1 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900',
+              'rounded-full border px-3 py-1 text-sm font-medium transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
               isSelected
-                ? 'border-neutral-900 bg-neutral-900 text-white hover:bg-neutral-800'
+                ? 'border-primary bg-primary text-white hover:bg-[#1d4ed8]'
                 : isSuggested
-                  ? 'border-blue-400 bg-blue-50 text-blue-700 hover:bg-blue-100'
-                  : 'border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100',
+                  ? 'border-primary/40 bg-primary/10 text-primary hover:bg-primary/20'
+                  : 'border-border bg-surface text-muted hover:border-primary/40 hover:text-ink',
             )}
           >
             {cat.name}

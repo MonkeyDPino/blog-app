@@ -13,21 +13,26 @@ export function Navbar() {
     : (user?.email ?? '');
 
   return (
-    <header className="border-b border-neutral-200 bg-white">
-      <nav className="container mx-auto flex items-center justify-between px-4 py-3">
-        <Link href="/" className="text-xl font-bold text-neutral-900">
+    <header className="border-b border-border bg-surface">
+      <nav className="container mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <Link
+          href="/"
+          className="font-serif text-2xl italic font-bold text-ink hover:text-primary transition-colors"
+        >
           Blog App
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {isLoading ? (
             <>
-              <Skeleton className="h-8 w-20" />
+              <Skeleton className="h-8 w-24" />
               <Skeleton className="h-8 w-20" />
             </>
           ) : user ? (
             <>
-              <span className="text-sm text-neutral-600">{fullName}</span>
+              <span className="hidden sm:block text-sm text-muted mr-1">
+                {fullName}
+              </span>
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
@@ -43,10 +48,10 @@ export function Navbar() {
           ) : (
             <>
               <Button variant="ghost" size="sm" asChild>
-                <Link href="/login">Login</Link>
+                <Link href="/login">Sign in</Link>
               </Button>
               <Button size="sm" asChild>
-                <Link href="/register">Register</Link>
+                <Link href="/register">Get started</Link>
               </Button>
             </>
           )}

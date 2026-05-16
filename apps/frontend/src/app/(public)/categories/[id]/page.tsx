@@ -34,21 +34,29 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <div>
-      <div className="mb-8">
-        {category.coverImage && (
-          <div className="mb-6 aspect-[3/1] overflow-hidden rounded-xl">
-            <img
-              src={category.coverImage}
-              alt={category.name}
-              className="h-full w-full object-cover"
-            />
-          </div>
-        )}
-        <h1 className="text-3xl font-bold">{category.name}</h1>
+      {category.coverImage && (
+        <div className="mb-8 aspect-[3/1] overflow-hidden rounded-xl">
+          <img
+            src={category.coverImage}
+            alt={category.name}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
+
+      <div className="mb-10 border-b border-border pb-6">
+        <h1 className="font-serif text-4xl font-bold text-ink">
+          {category.name}
+        </h1>
         {category.description && (
-          <p className="mt-2 text-neutral-600">{category.description}</p>
+          <p className="mt-2 text-muted">{category.description}</p>
         )}
+        <p className="mt-1 text-sm text-muted">
+          {publicPosts.length}{' '}
+          {publicPosts.length === 1 ? 'article' : 'articles'}
+        </p>
       </div>
+
       <PostList posts={publicPosts} />
     </div>
   );

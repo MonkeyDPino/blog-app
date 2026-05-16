@@ -39,20 +39,27 @@ export default function SearchPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-3xl font-bold">Search posts</h1>
+      <div className="mb-8 border-b border-border pb-6">
+        <h1 className="font-serif text-4xl font-bold text-ink">Search</h1>
+        <p className="mt-1 text-sm text-muted">Find articles by keyword</p>
+      </div>
+
       <Input
         type="search"
         placeholder="Type to search…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="mb-8 max-w-xl"
+        className="mb-8 max-w-xl text-base"
         autoFocus
       />
+
       {isLoading ? (
-        <p className="text-neutral-500">Searching…</p>
-      ) : query.trim() ? (
+        <p className="text-muted">Searching…</p>
+      ) : query.trim() && results.length === 0 ? (
+        <p className="text-muted">No results for &quot;{query}&quot;</p>
+      ) : (
         <PostList posts={results} />
-      ) : null}
+      )}
     </div>
   );
 }

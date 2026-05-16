@@ -141,7 +141,6 @@ export function PostForm({ postId, initialValues, categories }: PostFormProps) {
       const { suggestions } = await postsApi.suggestCategories(postId);
       setSuggestedNames(suggestions);
 
-      // Auto-select matching categories
       const matchedIds = categories
         .filter((cat) =>
           suggestions.some((s) => s.toLowerCase() === cat.name.toLowerCase()),
@@ -179,16 +178,20 @@ export function PostForm({ postId, initialValues, categories }: PostFormProps) {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Left — form fields */}
-          <div className="space-y-4">
-            <div className="space-y-1">
+          <div className="space-y-5">
+            <div className="space-y-1.5">
               <Label htmlFor="title">Title *</Label>
-              <Input id="title" {...register('title')} />
+              <Input
+                id="title"
+                placeholder="Your post title…"
+                {...register('title')}
+              />
               {errors.title && (
                 <p className="text-xs text-red-600">{errors.title.message}</p>
               )}
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <Label htmlFor="coverImage">Cover image URL</Label>
               <Input
                 id="coverImage"
@@ -203,7 +206,7 @@ export function PostForm({ postId, initialValues, categories }: PostFormProps) {
               )}
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <Label htmlFor="content">Content (Markdown)</Label>
                 <Button
@@ -219,18 +222,19 @@ export function PostForm({ postId, initialValues, categories }: PostFormProps) {
                 id="content"
                 rows={16}
                 className="font-mono text-sm"
+                placeholder="Write your content in Markdown…"
                 {...register('content')}
               />
             </div>
 
             {/* AI Improve panel */}
             {showAiPanel && (
-              <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 space-y-3">
-                <p className="text-sm font-medium text-blue-900">
+              <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 space-y-3">
+                <p className="text-sm font-semibold text-primary">
                   AI Content Improvement
                 </p>
                 <Input
-                  placeholder="Instruction (e.g. 'Make it more concise')"
+                  placeholder="Instruction — e.g. 'Make it more concise'"
                   value={aiInstruction}
                   onChange={(e) => setAiInstruction(e.target.value)}
                 />
@@ -244,10 +248,10 @@ export function PostForm({ postId, initialValues, categories }: PostFormProps) {
                 </Button>
                 {aiImproved && (
                   <div className="space-y-2">
-                    <p className="text-xs font-medium text-blue-800">
+                    <p className="text-xs font-medium text-primary">
                       Improved version:
                     </p>
-                    <div className="max-h-48 overflow-y-auto rounded border border-blue-200 bg-white p-3 text-sm font-mono whitespace-pre-wrap">
+                    <div className="max-h-48 overflow-y-auto rounded-md border border-border bg-surface p-3 text-sm font-mono whitespace-pre-wrap">
                       {aiImproved}
                     </div>
                     <div className="flex gap-2">
@@ -299,15 +303,15 @@ export function PostForm({ postId, initialValues, categories }: PostFormProps) {
           </div>
 
           {/* Right — live preview */}
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <Label>Preview</Label>
-            <div className="min-h-[400px] rounded-md border border-neutral-200 bg-white p-4 prose prose-neutral max-w-none overflow-y-auto">
+            <div className="min-h-[400px] rounded-xl border border-border bg-surface p-6 prose prose-slate max-w-none overflow-y-auto prose-headings:font-serif">
               {content ? (
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {content}
                 </ReactMarkdown>
               ) : (
-                <p className="text-neutral-400 italic">
+                <p className="text-muted italic not-prose">
                   Preview will appear here…
                 </p>
               )}
@@ -315,7 +319,7 @@ export function PostForm({ postId, initialValues, categories }: PostFormProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 pt-2">
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting
               ? 'Saving…'
@@ -329,18 +333,12 @@ export function PostForm({ postId, initialValues, categories }: PostFormProps) {
         </div>
       </form>
 
-      {/* Publish button lives outside the form */}
       {isEditing && postId && (
-        <div className="border-t border-neutral-200 pt-4">
-          <Button
-            variant="default"
-            onClick={handlePublish}
-            disabled={isPublishing}
-            className="bg-green-700 hover:bg-green-800"
-          >
+        <div className="border-t border-border pt-5">
+          <Button variant="cta" onClick={handlePublish} disabled={isPublishing}>
             {isPublishing ? 'Publishing…' : 'Publish post'}
           </Button>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1.5 text-xs text-muted">
             Publishing makes this post visible to everyone.
           </p>
         </div>

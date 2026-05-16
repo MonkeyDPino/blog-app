@@ -48,12 +48,13 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
           type="email"
           autoComplete="email"
+          placeholder="you@example.com"
           {...register('email')}
         />
         {errors.email && (
@@ -61,12 +62,13 @@ export function LoginForm() {
         )}
       </div>
 
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="password">Password</Label>
         <Input
           id="password"
           type="password"
           autoComplete="current-password"
+          placeholder="••••••••"
           {...register('password')}
         />
         {errors.password && (
@@ -84,10 +86,13 @@ export function LoginForm() {
         {isSubmitting ? 'Signing in…' : 'Sign in'}
       </Button>
 
-      <p className="text-center text-sm text-neutral-600">
+      <p className="text-center text-sm text-muted">
         Don&apos;t have an account?{' '}
-        <Link href="/register" className="underline hover:text-neutral-900">
-          Register
+        <Link
+          href="/register"
+          className="text-primary hover:underline font-medium"
+        >
+          Get started
         </Link>
       </p>
     </form>

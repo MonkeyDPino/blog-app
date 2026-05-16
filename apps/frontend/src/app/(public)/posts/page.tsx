@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { IPost } from '@blog/types';
 import { PostList } from '@/components/posts/PostList';
 
@@ -19,14 +20,22 @@ export default async function PostsPage() {
 
   return (
     <div>
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Posts</h1>
-        <a
+      <div className="mb-10 flex items-end justify-between border-b border-border pb-6">
+        <div>
+          <h1 className="font-serif text-4xl font-bold text-ink">
+            Latest Posts
+          </h1>
+          <p className="mt-1 text-muted text-sm">
+            {publicPosts.length}{' '}
+            {publicPosts.length === 1 ? 'article' : 'articles'} published
+          </p>
+        </div>
+        <Link
           href="/posts/search"
-          className="text-sm text-neutral-600 underline hover:text-neutral-900"
+          className="text-sm text-primary hover:underline font-medium"
         >
-          Search
-        </a>
+          Search →
+        </Link>
       </div>
       <PostList posts={publicPosts} />
     </div>

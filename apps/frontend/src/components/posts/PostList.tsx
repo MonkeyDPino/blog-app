@@ -7,9 +7,7 @@ interface PostListProps {
 
 export function PostList({ posts }: PostListProps) {
   if (posts.length === 0) {
-    return (
-      <p className="py-12 text-center text-neutral-500">No posts found.</p>
-    );
+    return <p className="py-12 text-center text-muted">No posts found.</p>;
   }
 
   return (

@@ -3,7 +3,9 @@ import { CategoryForm } from '@/components/admin/CategoryForm';
 export default function NewCategoryPage() {
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold">New category</h1>
+      <div className="mb-8 border-b border-border pb-6">
+        <h1 className="font-serif text-4xl font-bold text-ink">New category</h1>
+      </div>
       <CategoryForm />
     </div>
   );

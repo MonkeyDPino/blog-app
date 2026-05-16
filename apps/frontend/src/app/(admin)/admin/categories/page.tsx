@@ -63,8 +63,11 @@ export default function AdminCategoriesPage() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Categories</h1>
+      <div className="mb-10 flex items-end justify-between border-b border-border pb-6">
+        <div>
+          <h1 className="font-serif text-4xl font-bold text-ink">Categories</h1>
+          <p className="mt-1 text-sm text-muted">Manage content categories</p>
+        </div>
         <Button asChild>
           <Link href="/admin/categories/new">New category</Link>
         </Button>
@@ -73,29 +76,36 @@ export default function AdminCategoriesPage() {
       {isLoading ? (
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-14 w-full" />
+            <Skeleton key={i} className="h-14 w-full rounded-xl" />
           ))}
         </div>
       ) : categories.length === 0 ? (
-        <p className="text-neutral-500">No categories yet.</p>
+        <p className="py-12 text-center text-muted border border-dashed border-border rounded-xl">
+          No categories yet.
+        </p>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-neutral-200">
+        <div className="overflow-x-auto rounded-xl border border-border">
           <table className="w-full text-sm">
-            <thead className="bg-neutral-50 text-left text-neutral-600">
+            <thead className="bg-slate-50 text-left text-muted border-b border-border">
               <tr>
-                <th className="px-4 py-3 font-medium">Name</th>
-                <th className="px-4 py-3 font-medium">Description</th>
-                <th className="px-4 py-3 font-medium text-right">Actions</th>
+                <th className="px-5 py-3.5 font-medium">Name</th>
+                <th className="px-5 py-3.5 font-medium">Description</th>
+                <th className="px-5 py-3.5 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-100 bg-white">
+            <tbody className="divide-y divide-border bg-surface">
               {categories.map((cat) => (
-                <tr key={cat.id} className="hover:bg-neutral-50">
-                  <td className="px-4 py-3 font-medium">{cat.name}</td>
-                  <td className="px-4 py-3 text-neutral-500 max-w-sm truncate">
+                <tr
+                  key={cat.id}
+                  className="hover:bg-slate-50 transition-colors"
+                >
+                  <td className="px-5 py-3.5 font-semibold text-ink">
+                    {cat.name}
+                  </td>
+                  <td className="px-5 py-3.5 text-muted max-w-sm truncate">
                     {cat.description ?? <span className="italic">—</span>}
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-5 py-3.5 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Button variant="outline" size="sm" asChild>
                         <Link href={`/admin/categories/${cat.id}/edit`}>
@@ -126,7 +136,7 @@ export default function AdminCategoriesPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete category</DialogTitle>
+            <DialogTitle className="font-serif">Delete category</DialogTitle>
             <DialogDescription>
               Are you sure you want to delete &quot;{deleteTarget?.name}&quot;?
               This action cannot be undone.

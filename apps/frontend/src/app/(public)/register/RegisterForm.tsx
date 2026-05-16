@@ -57,28 +57,29 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <Label htmlFor="firstName">First name</Label>
-          <Input id="firstName" {...register('firstName')} />
+          <Input id="firstName" placeholder="John" {...register('firstName')} />
           {errors.firstName && (
             <p className="text-xs text-red-600">{errors.firstName.message}</p>
           )}
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <Label htmlFor="lastName">Last name</Label>
-          <Input id="lastName" {...register('lastName')} />
+          <Input id="lastName" placeholder="Doe" {...register('lastName')} />
           {errors.lastName && (
             <p className="text-xs text-red-600">{errors.lastName.message}</p>
           )}
         </div>
       </div>
 
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
           type="email"
           autoComplete="email"
+          placeholder="you@example.com"
           {...register('email')}
         />
         {errors.email && (
@@ -86,12 +87,13 @@ export function RegisterForm() {
         )}
       </div>
 
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         <Label htmlFor="password">Password</Label>
         <Input
           id="password"
           type="password"
           autoComplete="new-password"
+          placeholder="At least 8 characters"
           {...register('password')}
         />
         {errors.password && (
@@ -109,9 +111,12 @@ export function RegisterForm() {
         {isSubmitting ? 'Creating account…' : 'Create account'}
       </Button>
 
-      <p className="text-center text-sm text-neutral-600">
+      <p className="text-center text-sm text-muted">
         Already have an account?{' '}
-        <Link href="/login" className="underline hover:text-neutral-900">
+        <Link
+          href="/login"
+          className="text-primary hover:underline font-medium"
+        >
           Sign in
         </Link>
       </p>
