@@ -32,6 +32,8 @@ hash_password() {
 ADMIN_HASH=$(hash_password 'Admin1234!')
 WRITER_HASH=$(hash_password 'Writer1234!')
 
+RESET="${1:-}"
+
 # Use local psql if available, otherwise pipe through the Docker container
 run_psql() {
   if command -v psql >/dev/null 2>&1; then
@@ -44,6 +46,13 @@ run_psql() {
 }
 
 echo "→ Connecting to $PGUSER@$PGHOST:$PGPORT/$PGDATABASE"
+
+if [ "$RESET" = "--reset" ]; then
+  echo "→ Resetting existing seed data…"
+  run_psql <<RESET_SQL
+TRUNCATE posts_categories, posts, categories, users, profiles RESTART IDENTITY CASCADE;
+RESET_SQL
+fi
 
 run_psql <<SQL
 
@@ -63,27 +72,27 @@ ON CONFLICT DO NOTHING;
 -- USERS
 -- ─────────────────────────────────────────────
 INSERT INTO users (email, password, role, profile_id)
-SELECT 'admin@pinoblog.com', '$ADMIN_HASH', 'admin'::user_role_enum, id
+SELECT 'admin@pinoblog.com', '$ADMIN_HASH', 'admin', id
 FROM profiles WHERE first_name = 'Admin' AND last_name = 'Pino'
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO users (email, password, role, profile_id)
-SELECT 'carlos@pinoblog.com', '$WRITER_HASH', 'user'::user_role_enum, id
+SELECT 'carlos@pinoblog.com', '$WRITER_HASH', 'user', id
 FROM profiles WHERE first_name = 'Carlos' AND last_name = 'Ramírez'
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO users (email, password, role, profile_id)
-SELECT 'maria@pinoblog.com', '$WRITER_HASH', 'user'::user_role_enum, id
+SELECT 'maria@pinoblog.com', '$WRITER_HASH', 'user', id
 FROM profiles WHERE first_name = 'María' AND last_name = 'González'
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO users (email, password, role, profile_id)
-SELECT 'sofia@pinoblog.com', '$WRITER_HASH', 'user'::user_role_enum, id
+SELECT 'sofia@pinoblog.com', '$WRITER_HASH', 'user', id
 FROM profiles WHERE first_name = 'Sofía' AND last_name = 'Herrera'
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO users (email, password, role, profile_id)
-SELECT 'andres@pinoblog.com', '$WRITER_HASH', 'user'::user_role_enum, id
+SELECT 'andres@pinoblog.com', '$WRITER_HASH', 'user', id
 FROM profiles WHERE first_name = 'Andrés' AND last_name = 'Torres'
 ON CONFLICT (email) DO NOTHING;
 
