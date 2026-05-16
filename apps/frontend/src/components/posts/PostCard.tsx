@@ -29,7 +29,7 @@ export function PostCard({ post }: PostCardProps) {
   });
 
   return (
-    <article className="group flex flex-col rounded-xl border border-border bg-surface overflow-hidden hover:border-primary/40 transition-colors duration-200">
+    <Link href={`/posts/${post.id}`} className="group flex flex-col rounded-xl border border-border bg-surface overflow-hidden hover:border-primary/40 transition-colors duration-200">
       {post.coverImage && (
         <div className="aspect-video overflow-hidden">
           <img
@@ -51,13 +51,8 @@ export function PostCard({ post }: PostCardProps) {
           </div>
         )}
 
-        <h2 className="font-serif text-lg font-semibold leading-snug text-ink mb-2">
-          <Link
-            href={`/posts/${post.id}`}
-            className="hover:text-primary transition-colors"
-          >
-            {post.title}
-          </Link>
+        <h2 className="font-serif text-lg font-semibold leading-snug text-ink mb-2 group-hover:text-primary transition-colors">
+          {post.title}
         </h2>
 
         {excerpt && (
@@ -83,6 +78,6 @@ export function PostCard({ post }: PostCardProps) {
           <time>{publishedAt}</time>
         </footer>
       </div>
-    </article>
+    </Link>
   );
 }
