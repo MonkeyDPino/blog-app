@@ -339,6 +339,14 @@ INSERT INTO posts (title, content, summary, cover_image, is_draft, author_id) SE
   true, id FROM users WHERE email = 'andres@pinoblog.com' ON CONFLICT DO NOTHING;
 
 -- ─────────────────────────────────────────────
+-- SEARCH VECTORS
+-- ─────────────────────────────────────────────
+UPDATE posts
+SET search_vector = to_tsvector('english',
+  coalesce(title, '') || ' ' || coalesce(content, ''))
+WHERE search_vector IS NULL;
+
+-- ─────────────────────────────────────────────
 -- POSTS ↔ CATEGORIES
 -- ─────────────────────────────────────────────
 INSERT INTO posts_categories (post_id, category_id) SELECT p.id, c.id FROM posts p, categories c
