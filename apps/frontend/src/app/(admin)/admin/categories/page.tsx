@@ -88,6 +88,7 @@ export default function AdminCategoriesPage() {
           <table className="w-full text-sm">
             <thead className="bg-surface text-left text-muted border-b border-border">
               <tr>
+                <th className="px-5 py-3.5 font-medium w-16">Cover</th>
                 <th className="px-5 py-3.5 font-medium">Name</th>
                 <th className="px-5 py-3.5 font-medium">Description</th>
                 <th className="px-5 py-3.5 font-medium text-right">Actions</th>
@@ -99,6 +100,17 @@ export default function AdminCategoriesPage() {
                   key={cat.id}
                   className="hover:bg-surface/50 transition-colors"
                 >
+                  <td className="px-5 py-3">
+                    {cat.coverImage ? (
+                      <img
+                        src={cat.coverImage}
+                        alt={cat.name}
+                        className="h-9 w-16 rounded object-cover"
+                      />
+                    ) : (
+                      <div className="h-9 w-16 rounded bg-surface border border-border" />
+                    )}
+                  </td>
                   <td className="px-5 py-3.5 font-semibold text-ink">
                     {cat.name}
                   </td>

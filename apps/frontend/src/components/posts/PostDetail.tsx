@@ -47,10 +47,23 @@ export function PostDetail({ post }: PostDetailProps) {
           {post.title}
         </h1>
 
-        <div className="mt-4 flex items-center gap-2 text-sm text-muted">
-          <span className="font-medium text-ink/70">{authorName}</span>
-          <span>·</span>
-          <time>{publishedAt}</time>
+        <div className="mt-4 flex items-center gap-3 text-sm text-muted">
+          {post.author.profile?.avatarUrl ? (
+            <img
+              src={post.author.profile.avatarUrl}
+              alt={authorName}
+              className="h-8 w-8 rounded-full object-cover ring-2 ring-border shrink-0"
+            />
+          ) : (
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-sm font-bold text-primary ring-2 ring-border">
+              {authorName.charAt(0).toUpperCase()}
+            </span>
+          )}
+          <div className="flex items-center gap-1.5">
+            <span className="font-medium text-ink/70">{authorName}</span>
+            <span>·</span>
+            <time>{publishedAt}</time>
+          </div>
         </div>
       </header>
 

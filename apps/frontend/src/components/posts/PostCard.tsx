@@ -66,7 +66,18 @@ export function PostCard({ post }: PostCardProps) {
           </p>
         )}
 
-        <footer className="mt-auto flex items-center gap-1.5 text-xs text-muted pt-3 border-t border-border">
+        <footer className="mt-auto flex items-center gap-2 text-xs text-muted pt-3 border-t border-border">
+          {post.author.profile?.avatarUrl ? (
+            <img
+              src={post.author.profile.avatarUrl}
+              alt={authorName}
+              className="h-5 w-5 rounded-full object-cover ring-1 ring-border shrink-0"
+            />
+          ) : (
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-[10px] font-bold text-primary ring-1 ring-border">
+              {authorName.charAt(0).toUpperCase()}
+            </span>
+          )}
           <span className="font-medium text-ink/80">{authorName}</span>
           <span>·</span>
           <time>{publishedAt}</time>
